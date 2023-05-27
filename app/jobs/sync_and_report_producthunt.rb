@@ -6,6 +6,7 @@ class SyncAndReportProducthunt < ApplicationJob
   REPO = 'producthunt/producthunt'
 
   # TODO(DZ): Github API can be moved into external
+  # TODO(DZ): Throttle job with 5000 api calls per hour
   def perform(*args)
     page = repo.rels[:pulls].get(query: { direction: 'asc', state: 'all' })
     process_page(page)
