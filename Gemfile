@@ -71,6 +71,9 @@ group :development do
   gem "rubocop-performance", "~> 1.11", require: false
   gem "rubocop-rails", "~> 2.11", require: false
   gem "rubocop-shopify", require: false
+
+  # Annotate Rails classes with schema and routes info
+  gem 'annotate'
 end
 
 group :test do
