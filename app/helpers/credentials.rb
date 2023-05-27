@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Credentials
   extend self
 
@@ -17,7 +19,7 @@ module Credentials
     else
       value = Rails.application.credentials.dig(Rails.env.to_sym, key)
       value ||= Rails.application.credentials[key]
-      value || raise("Couldn't find '#{ key }' in encrypted fetchs")
+      value || raise("Couldn't find '#{key}' in encrypted fetchs")
     end
   end
 
