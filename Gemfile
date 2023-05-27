@@ -79,3 +79,6 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+# GitHub API client
+gem "octokit", "~> 5.0"
