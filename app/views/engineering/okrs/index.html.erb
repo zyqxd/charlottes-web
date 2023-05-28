@@ -1,0 +1,60 @@
+<h1>PR Summary</h1>
+
+<table>
+  <tr>
+    <th>
+      User
+    </th>
+    <% @pr_weeks.each do |week| %>
+      <th>
+        <%= week.strftime('%m-%d') %>
+      </th>
+    <% end %>
+  </tr>
+  <hr />
+  <% @prs_summary.each do |user, pr_weeks_data| %>
+    <tr>
+      <td>
+        <%= user %>
+      </td>
+      <% @pr_weeks.each do |week| %>
+        <th>
+        <%# TOOD(DZ): Link to show page %>
+          <%= pr_weeks_data[week] || 0 %>
+        </th>
+      <% end %>
+    </tr>
+  <% end %>
+  <tr>
+</table>
+
+<br />
+<h1>Reviews Summary</h1>
+
+<table>
+  <tr>
+    <th>
+      User
+    </th>
+    <% @review_weeks.each do |week| %>
+      <th>
+        <%= week.strftime('%m-%d') %>
+      </th>
+    <% end %>
+  </tr>
+  <hr />
+  <% @reviews_summary.each do |user, review_weeks_data| %>
+    <tr>
+      <td>
+        <%= user %>
+      </td>
+      <% @review_weeks.each do |week| %>
+        <th>
+        <%# TOOD(DZ): Link to show page %>
+          <%= review_weeks_data[week] || 0 %>
+        </th>
+      <% end %>
+    </tr>
+  <% end %>
+  <tr>
+</table>

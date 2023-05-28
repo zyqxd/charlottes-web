@@ -25,6 +25,8 @@ class GithubReview < ApplicationRecord
 
   has_many :github_comments, inverse_of: :github_review, dependent: :destroy
 
+  scope :group_by_week, -> { group("date_trunc('week', submitted_at)") }
+
   class << self
     def update_or_create_with(pr, review)
       record = find_or_initialize_by(

@@ -32,7 +32,11 @@ class GithubPullRequest < ApplicationRecord
   enum state: {
     open: "open",
     closed: "closed",
-    merged: "merged",
+  }
+  # closed prs 16346
+
+  scope :group_by_week, ->(field = "created_at") {
+    group("date_trunc('week', #{field})")
   }
 
   class << self
