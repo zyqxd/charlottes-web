@@ -73,7 +73,7 @@ group :development do
   gem "rubocop-shopify", require: false
 
   # Annotate Rails classes with schema and routes info
-  gem 'annotate'
+  gem "annotate"
 end
 
 group :test do

@@ -1,10 +1,10 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: github_pull_requests
 #
 #  id                    :bigint           not null, primary key
-#  author                :string           not null
-#  author_url            :string           not null
 #  closed_at             :datetime
 #  comments_count        :integer          default(0), not null
 #  commits_count         :integer          default(0), not null
@@ -15,24 +15,28 @@
 #  repository            :string           not null
 #  repository_url        :string           not null
 #  review_comments_count :integer          default(0), not null
+#  reviews_count         :integer          default(0), not null
 #  state                 :string           not null
 #  title                 :string           not null
 #  url                   :string           not null
+#  user                  :string           not null
+#  user_url              :string           not null
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
-#  author_id             :string           not null
-#  repository_id         :string           not null
+#  repository_id         :bigint           not null
+#  user_id               :bigint           not null
 #
 class GithubPullRequest < ApplicationRecord
+  has_many :github_reviews, dependent: :destroy, inverse_of: :github_pull_request
+
   enum state: {
-    open: 'open',
-    closed: 'closed',
-    merged: 'merged',
+    open: "open",
+    closed: "closed",
+    merged: "merged",
   }
 
   class << self
-    def update_or_create_with(pull)
-      data = pull.data
+    def update_or_create_with(data)
       record = GithubPullRequest.find_or_initialize_by(number: data.number)
 
       record.update!(
@@ -44,9 +48,9 @@ class GithubPullRequest < ApplicationRecord
         comments_count: data.comments,
         commits_count: data.commits,
         review_comments_count: data.review_comments,
-        author: data.user.login,
-        author_id: data.user.id,
-        author_url: data.user.html_url,
+        user: data.user.login,
+        user_id: data.user.id,
+        user_url: data.user.html_url,
         repository: data.base.repo.full_name,
         repository_id: data.base.repo.id,
         repository_url: data.base.repo.html_url,
@@ -55,6 +59,8 @@ class GithubPullRequest < ApplicationRecord
         merged_at: data.merged_at,
         closed_at: data.closed_at,
       )
+
+      record
     end
   end
 end
