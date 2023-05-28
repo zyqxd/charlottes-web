@@ -15,7 +15,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_224429) do
   enable_extension "plpgsql"
 
   create_table "github_comments", force: :cascade do |t|
-    t.bigint "github_reviews_id", null: false
+    t.bigint "github_review_id", null: false
     t.string "node_id", null: false
     t.string "url", null: false
     t.string "user", null: false
@@ -24,7 +24,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_224429) do
     t.string "body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["github_reviews_id"], name: "index_github_comments_on_github_reviews_id"
+    t.index ["github_review_id"], name: "index_github_comments_on_github_review_id"
     t.index ["node_id"], name: "index_github_comments_on_node_id", unique: true
   end
 
@@ -58,9 +58,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_224429) do
     t.string "user_url", null: false
     t.integer "comments_count", default: 0, null: false
     t.datetime "submitted_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["github_pull_request_id"], name: "index_github_reviews_on_github_pull_request_id"
   end
 
-  add_foreign_key "github_comments", "github_reviews", column: "github_reviews_id"
+  add_foreign_key "github_comments", "github_reviews"
   add_foreign_key "github_reviews", "github_pull_requests"
 end

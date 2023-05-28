@@ -9,6 +9,8 @@
 #  submitted_at           :datetime         not null
 #  user                   :string           not null
 #  user_url               :string           not null
+#  created_at             :datetime         not null
+#  updated_at             :datetime         not null
 #  github_pull_request_id :bigint           not null
 #  user_id                :bigint           not null
 #

@@ -16,7 +16,7 @@ class CreateGithubCommentsAndReviews < ActiveRecord::Migration[7.0]
     end
 
     create_table(:github_comments) do |t|
-      t.references(:github_reviews, null: false, foreign_key: true)
+      t.references(:github_review, null: false, foreign_key: true)
       t.string(:node_id, null: false, index: { unique: true })
       t.string(:url, null: false)
       t.string(:user, null: false)

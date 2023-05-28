@@ -20,8 +20,22 @@ module Engineering
     EFFECTIVE_REVIEW_LIMIT = 20
     MIN_COMMENT_MULTIPLIER = 0.5
 
+    IGNORE_USERS = [
+      "alexisbronchart",
+      "maciesielka",
+      "grangej",
+      "rsiwady",
+      "RStankov",
+      "rosgoo",
+      "jacobcrump",
+      "jtbg",
+      "ashleyhiggins",
+      "MichaelSilber",
+      "petarlv",
+    ]
+
     def index
-      @merged_prs = ::GithubPullRequest.closed.where.not(merged_at: nil)
+      @merged_prs = ::GithubPullRequest.closed.where.not(merged_at: nil).where.not(user: IGNORE_USERS)
       @pr_weeks = @merged_prs.group_by_week("merged_at").count.map(&:first).sort
 
       @prs_summary =
@@ -46,18 +60,17 @@ module Engineering
         ::GithubReview
           .group("user", "submitted_at")
           .select(REVIEW_SUMMARY_COLUMNS.join(", "))
+          .where.not(user: IGNORE_USERS)
           .group_by(&:user)
           .transform_values do |raw_review_data|
             reviews_per_week = raw_review_data.group_by(&:week)
             reviews_per_week.transform_values do |raw_review_weeks|
-              total_comments = raw_review_weeks[0].comments_count
-              total_reviews = raw_review_weeks[0].reviews_count
+              total_comments = raw_review_weeks.sum(&:comments_count)
+              total_reviews = raw_review_weeks.size
 
+              reviews_count = [total_reviews, EFFECTIVE_REVIEW_LIMIT].min
               # MIN( # reviews, UL ) * ( avg depth + MDM )
-              [
-                total_reviews,
-                EFFECTIVE_REVIEW_LIMIT,
-              ].min * (total_comments / total_reviews.to_f + MIN_COMMENT_MULTIPLIER)
+              (reviews_count * total_comments / total_reviews.to_f + MIN_COMMENT_MULTIPLIER).round
             end
           end
     end
