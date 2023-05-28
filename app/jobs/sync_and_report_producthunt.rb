@@ -12,7 +12,11 @@ class SyncAndReportProducthunt < ApplicationJob
   # TODO(DZ): Job should only run new prs unless specified
   # TODO(DZ): Figure out how to organize by updated at
   def perform(*args)
-    page = repo.rels[:pulls].get(query: { direction: "desc", state: "all" })
+    page = repo.rels[:pulls].get(query: {
+      direction: "desc",
+      state: "all",
+      sort: "updated",
+    })
     process_page(page)
 
     while page.rels[:next]
