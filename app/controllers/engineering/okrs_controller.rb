@@ -51,7 +51,7 @@ module Engineering
             total_prs = raw_pr_weeks[0].prs_count
 
             # SQRT( # PRs * MIN( lines, MLP * # PRs ) )
-            Math.sqrt(total_prs * [total_lines, MAX_LINES_PER_PR * total_prs].min).round
+            Math.sqrt(total_prs * [total_lines, MAX_LINES_PER_PR * total_prs].min).round(1)
           end
         end
 
@@ -70,7 +70,7 @@ module Engineering
 
               reviews_count = [total_reviews, EFFECTIVE_REVIEW_LIMIT].min
               # MIN( # reviews, UL ) * ( avg depth + MDM )
-              (reviews_count * total_comments / total_reviews.to_f + MIN_COMMENT_MULTIPLIER).round
+              (reviews_count * total_comments / total_reviews.to_f + MIN_COMMENT_MULTIPLIER).round(1)
             end
           end
     end

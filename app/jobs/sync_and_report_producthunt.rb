@@ -53,7 +53,7 @@ class SyncAndReportProducthunt < ApplicationJob
       GithubComment.update_or_create_with(review, comment)
     end
   end
-  # ISSUES: 15906, 16046
+  # TODO(DZ): ISSUES: 15906, 16046
 
   def client
     @client ||= Octokit::Client.new(access_token: Credentials.github_pat_token)
